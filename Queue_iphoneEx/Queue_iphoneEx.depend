@@ -1,0 +1,9 @@
+# depslib dependency file v1.0
+1672418907 source:e:\study\code\code\c\queue_iphoneex\main.c
+	<stdio.h>
+	<stdbool.h>
+
+1672418907 source:e:\study\code\code\c\queue_ex\queue_iphoneex\main.c
+	<stdio.h>
+	<stdbool.h>
+

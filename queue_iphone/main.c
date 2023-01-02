@@ -1,128 +1,87 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
-#define SIZE 5
+#define SIZE 10
 
-typedef struct buyer_info
+//cau truc nguoi mua: Gom ten, tuoi
+typedef struct BUYER
 {
-    char name[100];
+    char name[20];
     int age;
-    char gender[2];
-    int number;
-} buyer;
+} buyer_t;
 
+/*
+Cau truc hang:
+Gom vi tri dau tien (front): Nguoi mua den som nhat dang o vi tri nay
+vi  tri cuoi cung (rear): Tong so luong nguoi mua
+va so luu tru con tro tro den thong tin nguoi mua (Buyer_t):
+(buyer_t items[SIZE])
+*/
 typedef struct QUEUE
 {
-    int front;
+    int front;      //
     int rear;
-    int *items[SIZE];
-} queue;
+    buyer_t *items[SIZE];
+} queue_t;
 
-void init_queue (queue *q)
+/*
+Ham khoi tao queue:
+Khoi tao queue de bat dau xep hang.
+Set default vi tri con tro front va rear = -1.
+*/
+void init_queue(queue_t *q)
 {
     q->front = -1;
     q->rear = -1;
 }
 
-bool is_empty (queue *q)
+/*
+Ham queue is_empty:
+Luc nay con tro front se tro ve = -1;
+*/
+bool is_empty(queue_t *q)
 {
-   return q->front == -1;
+    return q->front == -1;
+}
+/*
+Ham queue is_full:
+Full du SIZE (so luong nguoi), khi nay return
+con tro rear = so luong nguoi -1.
+*/
+bool is_full(queue_t *q)
+{
+    return q->rear == SIZE -1;
 }
 
-bool is_full (queue *q)
-{
-    return q->rear == SIZE - 1;
-}
-
-void print_queue(queue *q)
+/*
+Ham in queue:
+In ra thanh phan trong queue, muc dich de biet
+con tro front rear dang o dau, va dang den buyer nao.
+*/
+void print_queue(queue_t *q)
 {
     if (!is_empty(q))
     {
-        printf("There are people in line: [Front: %d. Rear: %d. Items=[", q->front, q->rear);
-        for (int i = q->front; i <= q->rear; i++)
+        printf("Queue: [Front: %d, Rear: %d, Items: \n", q->front, q->rear);
+        for (int i = q->front; i < q->rear; i++)
         {
             printf("%d", *(q->items[i]));
             if (i != q->rear)
             {
-                printf(", ");
+                printf(" , ");
             }
         }
-        printf("]]\n");
-
-    }
-    else
-    {
-        printf("There are %d people waiting in line", q->rear);
+        printf("].\n");
     }
 }
 
-// buyer_ptr is the pointer to buyer that will be enqueued
-void enqueue (queue *q, int *buyer_ptr)
-{
-    if (!is_full(q))
-    {
-        if (is_empty(q))
-        {
-            q->front = 0;
-        }
-        else
-        {
-            q->rear++;
-            q->items[q->rear]= buyer_ptr;
-            printf("DEBUG: Enqueue: Inserted person number %d to pos. %d people in queue.\n", *buyer_ptr, q->rear + 1);
-        }
-    }
-    else
-    {
-        printf("The queue is full.\n");
-        print_queue(q);
-    }
-}
+/*
+TODO: Viet ham buyer info, ham enqueue, dequeue, ham main
+*/
 
-int dequeue (queue *q)
-{
-    if (!is_empty(q))
-    {
-        // get the first buyer
-        int ip_buyer = q->items[q->front];
-        q->front++;
+void buyer_info (queue_t *q)
 
-        if (q->front > q->rear)
-        {
-            q->front = -1;
-            q->rear = -1;
-        }
-        return ip_buyer;
-    }
-    else
-    {
-        printf("Queue is empty.\n");
-        return NULL;
-    }
-}
 int main()
 {
-    queue *q;
-    init_queue(&q);
-
-   struct buyer_info b1, b2, b3, b4, b5;
-
-    enqueue(&q, &b1);
-    enqueue(&q, &b2);
-    enqueue(&q, &b3);
-    enqueue(&q, &b4);
-    enqueue(&q, &b5);
-
-    print_queue(&q);
-
-    int *ip_buyer = dequeue(&q);
-
-    while (ip_buyer != NULL)
-    {
-        printf("\nDequeued: elem = %d.\n", *ip_buyer);
-        print_queue(&q);
-        ip_buyer = dequeue(&q);
-    }
-
     return 0;
 }
